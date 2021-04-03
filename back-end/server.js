@@ -43,6 +43,9 @@ const bikeSchema = new mongoose.Schema({
   suspension: String,
   frame: String,
   tires: String,
+  suspensionPath: String,
+  framePath: String,
+  tiresPath: String,
 });
 
 // Create a model for assembled bikes.
