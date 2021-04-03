@@ -7,9 +7,9 @@
     <div class="dropdown">
       <button class="dropbtn">Choose your frame:</button>
       <div class="dropdown-content">
-        <a href="#">Fox Float 32</a>
-        <a href="#">RockShox SID</a>
-        <a href="#">RockShox Yari</a>
+        <a v-on:click="displayPhoto(1)" >Fox Float 32</a>
+        <a v-on:click="displayPhoto(2)" >RockShox SID</a>
+        <a v-on:click="displayPhoto(3)" >RockShox Yari</a>
       </div>   
     </div>
     
@@ -19,7 +19,21 @@
 </template>
 
 <script>
+export default {
+  name: 'Home',
+  data(){
+    return {
+      suspension: "",
+      frame: "",
+      tire: "",
+    }
+  },
+  methods: {
+    displayPhotos(num) {
 
+    }
+  }
+}
 </script>
 
 <style>
