@@ -3,7 +3,7 @@
     <h1>Begin assembling your dream bike:</h1>
 
     <div class="question">
-      <select required name="suspension" id="suspension" v-model="suspension">
+      <select required name="suspension" id="suspension" v-model="suspension" @change="savePhoto(suspension)" >
         <option disabled value="">Choose your suspension</option>
         <option value="Fox Float 32">Fox Float 32</option>
         <option value="RockShox SID">RockShox SID</option>
@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="question">
-      <select required name="frame" id="frame" v-model="frame">
+      <select required name="frame" id="frame" v-model="frame" @change="savePhoto(frame)" >
         <option disabled value="">Choose your frame</option>
         <option value="Santa Cruz Tallboy">Santa Cruz Tallboy</option>
         <option value="Specialized Stump Jumper">Specialized Stump Jumper</option>
@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="question">
-      <select required name="tires" id="tires" v-model="tires">
+      <select required name="tires" id="tires" v-model="tires" @change="savePhoto(tires)" >
         <option disabled value="">Choose your tires</option>
         <option value="Maxxis Minions">Maxxis Minions</option>
         <option value="Maxxis Agressors">Maxxis Agressors</option>
@@ -56,8 +56,8 @@
         <img src="../assets/dissector.jpeg">
       </div>
     </div>
-    <div>
-      <button v-on:click="uploadBike">Save Bike to Wishlist</button>
+    <div v-if="bikeAdded == true" >
+      <button v-on:click="upload()" id="saveButton" >Save Bike to Wishlist</button>
     </div>
   </div>
 
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: "Home",
   data() {
@@ -75,19 +76,38 @@ export default {
       suspnesionPhotoPath: '',
       tirePhotoPath: '',
       framePhotoPath: '',
+      bikeAdded: false,
     };
   },
   methods: {
-    option(num) {
-      console.log("ENTERED!!!!")
-      if (num == 1) {
-        this.suspensionPhoto = 1;
+    savePhoto(component){
+      if (component == "Fox Float 32") {this.suspnesionPhotoPath = "../assets/fox-sus.jpeg"}
+      else if (component == "RockShox SID") {this.suspnesionPhotoPath = "../assets/sid-sus.jpeg"}
+      else if (component == "RockShox Yari") {this.suspnesionPhotoPath = "../assets/yari-sus.jpeg"}
+      else if (component == "Santa Cruz Tallboy") {this.framePhotoPath = "../assets/tallboy.jpeg"}
+      else if (component == "Specialized Stump Jumper") {this.framePhotoPath = "../assets/stumper.jpeg"}
+      else if (component == "Cannondale Habit") {this.framePhotoPath = "../assets/habit.jpeg"}
+      else if (component == "Maxxis Minions") {this.tirePhotoPath = "../assets/minion.jpeg"}
+      else if (component == "Maxxis Agressors") {this.tirePhotoPath = "../assets/agressor.jpeg"}
+      else if (component == "Maxxis Dissector") {this.tirePhotoPath = "../assets/dissector.jpeg"}
+      if (this.suspnesionPhotoPath && this.framePhotoPath && this.tirePhotoPath) {
+        this.bikeAdded = true;
       }
-      if (num == 2) {
-        this.suspensionPhoto = 2;
-      }
-      if (num == 3) {
-        this.suspensionPhoto = 3;
+    },
+    async upload() {
+      try {
+        let bikeToDB = await axios.post('/api/items', {
+          suspension: this.suspension,
+          frame: this.frame,
+          tires: this.tires,
+          suspnesionPath: this.suspnesionPhotoPath,
+          framePath: this.framePhotoPath,
+          tiresPath: this.tirePhotoPath,
+        });
+        this.bikeAdded = bikeToDB.data;
+        console.log("My bike info: " + this.bikeAdded);
+      } catch (error) {
+        console.log(error);
       }
     },
   },
@@ -112,5 +132,11 @@ img {
   margin-top: 60px;
 }
 
+#saveButton {
+  margin-top: 30px;
+  margin-bottom: 50px;
+  background-color: red;
+  font-size: 50px;
+}
 
 </style>
