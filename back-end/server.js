@@ -24,6 +24,9 @@ app.post('/api/bikes', async (req, res) => {
     suspension: req.body.suspension,
     frame: req.body.frame,
     tires: req.body.tires,
+    suspensionPath: req.body.suspensionPath,
+    framePath: req.body.framePath,
+    tiresPath: req.body.tiresPath,
   });
   try {
     console.log(req.body);

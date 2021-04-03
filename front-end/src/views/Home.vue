@@ -1,81 +1,116 @@
 <template>
-  <div>
+  <div >
     <h1>Begin assembling your dream bike:</h1>
 
-
-
-    <div class="dropdown">
-      <button class="dropbtn">Choose your frame:</button>
-      <div class="dropdown-content">
-        <a v-on:click="displayPhoto(1)" >Fox Float 32</a>
-        <a v-on:click="displayPhoto(2)" >RockShox SID</a>
-        <a v-on:click="displayPhoto(3)" >RockShox Yari</a>
-      </div>   
+    <div class="question">
+      <select required name="suspension" id="suspension" v-model="suspension">
+        <option disabled value="">Choose your suspension</option>
+        <option value="Fox Float 32">Fox Float 32</option>
+        <option value="RockShox SID">RockShox SID</option>
+        <option value="RockShox Yari">RockShox Yari</option>
+      </select>
+      <pre>Suspension = {{ suspension }}</pre>
+      <div v-if='suspension == "Fox Float 32"'>
+        <img src="../assets/fox-sus.jpeg">
+      </div>
+      <div v-if='suspension == "RockShox SID"'>
+        <img src="../assets/sid-sus.jpeg">
+      </div>
+      <div v-if='suspension == "RockShox Yari"'>
+        <img src="../assets/yari-sus.jpeg">
+      </div>
     </div>
-    
+    <div class="question">
+      <select required name="frame" id="frame" v-model="frame">
+        <option disabled value="">Choose your frame</option>
+        <option value="Santa Cruz Tallboy">Santa Cruz Tallboy</option>
+        <option value="Specialized Stump Jumper">Specialized Stump Jumper</option>
+        <option value="Cannondale Habit">Cannondale Habit</option>
+      </select>
+      <pre>Frame = {{ frame }}</pre>
+      <div v-if='frame == "Santa Cruz Tallboy"'>
+        <img src="../assets/tallboy.jpeg">
+      </div>
+      <div v-if='frame == "Specialized Stump Jumper"'>
+        <img src="../assets/stumper.jpeg">
+      </div>
+      <div v-if='frame == "Cannondale Habit"'>
+        <img src="../assets/habit.jpeg">
+      </div>
+    </div>
+    <div class="question">
+      <select required name="tires" id="tires" v-model="tires">
+        <option disabled value="">Choose your tires</option>
+        <option value="Maxxis Minions">Maxxis Minions</option>
+        <option value="Maxxis Agressors">Maxxis Agressors</option>
+        <option value="Maxxis Dissector">Maxxis Dissector</option>
+      </select>
+      <pre>Tires = {{ tires }}</pre>
+      <div v-if='tires == "Maxxis Minions"'>
+        <img src="../assets/minion.jpeg">
+      </div>
+      <div v-if='tires == "Maxxis Agressors"'>
+        <img src="../assets/agressor.jpeg">
+      </div>
+      <div v-if='tires == "Maxxis Dissector"'>
+        <img src="../assets/dissector.jpeg">
+      </div>
+    </div>
+    <div>
+      <button v-on:click="uploadBike">Save Bike to Wishlist</button>
+    </div>
+  </div>
 
 
-</div>
 </template>
 
 <script>
 export default {
-  name: 'Home',
-  data(){
+  name: "Home",
+  data() {
     return {
       suspension: "",
       frame: "",
-      tire: "",
-    }
+      tires: "",
+      suspnesionPhotoPath: '',
+      tirePhotoPath: '',
+      framePhotoPath: '',
+    };
   },
   methods: {
-    displayPhotos(num) {
-
-    }
-  }
-}
+    option(num) {
+      console.log("ENTERED!!!!")
+      if (num == 1) {
+        this.suspensionPhoto = 1;
+      }
+      if (num == 2) {
+        this.suspensionPhoto = 2;
+      }
+      if (num == 3) {
+        this.suspensionPhoto = 3;
+      }
+    },
+  },
+};
 </script>
 
 <style>
-/* Dropdown Button */
-.dropbtn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
+select {
+  width: 200px;
+  height: 30px;
 }
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
+pre {
+  font-size: 20px;
 }
 
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+img {
+  width: 500px;
 }
 
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+.question {
+  margin-top: 60px;
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
 </style>
