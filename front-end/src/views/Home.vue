@@ -73,9 +73,9 @@ export default {
       suspension: "",
       frame: "",
       tires: "",
-      suspnesionPhotoPath: '',
-      tirePhotoPath: '',
-      framePhotoPath: '',
+      suspnesionPhotoPath: "",
+      tirePhotoPath: "",
+      framePhotoPath: "",
       bikeAdded: false,
     };
   },
@@ -96,7 +96,7 @@ export default {
     },
     async upload() {
       try {
-        let bikeToDB = await axios.post('/api/items', {
+        let bikeToDB = await axios.post('/api/bikes', {
           suspension: this.suspension,
           frame: this.frame,
           tires: this.tires,
@@ -114,7 +114,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 select {
   width: 200px;
   height: 30px;
