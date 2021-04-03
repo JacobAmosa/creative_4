@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>HOME.VUE</h1>
+    <h1>THIS PAGE IS WHERE I ASSEMBLE BIKES</h1>
   </div>
 </template>
 
