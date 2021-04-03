@@ -2,8 +2,8 @@
   <div id="app">
     <div class = "header">
       <router-link class="routes" to="/">Home</router-link>
-      <router-link class="routes" to="/bikes">Bike List</router-link>
       <router-link class="routes" to="/about">About</router-link>
+      <router-link class="routes" to="/bikes">Bike List</router-link>
     </div>
     <router-view />
   </div>
