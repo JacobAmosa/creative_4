@@ -6,6 +6,9 @@
       <router-link class="routes" to="/bikes">Bike Wishlist</router-link>
     </div>
     <router-view />
+    <footer>
+      <a href="https://github.com/JacobAmosa/creative_4.git">Github Repository</a>
+    </footer>
   </div>
 </template>
 
@@ -36,5 +39,15 @@ html, body {
   padding-right: 25px;
   font-size: 20px;
 }
+
+  footer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color:  #9cbddf;
+  }
 
 </style>
