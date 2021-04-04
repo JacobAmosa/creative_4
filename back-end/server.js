@@ -76,11 +76,10 @@ app.delete('/api/bikes/:id', async (req, res) => {
 //Retrieves and edits specific bike.
 app.put('/api/bikes/:id', async (req, res) => {
   let editedbike;
+  console.log("ATTEMPTING: " + req );
   try{
-    editedbike = await Bike.findOne({_id:req.params.id});
-    editedbike.suspension = req.body.suspension;
+    editedbike = await Bike.findOne(req.bike);
     editedbike.frame = req.body.frame;
-    editedbike.tires = req.body.tires;
     editedbike.save();
     res.sendStatus(200);
   }catch (error) {

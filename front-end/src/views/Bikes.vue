@@ -1,25 +1,62 @@
 <template>
-<div class="home">
-  <section class="futureBikes">
-    <div class="bike" v-for="bike in bikes" :key="bike.id">
-      <h2>{{bike.suspension}}</h2>
-      <h2>{{bike.frame}}</h2>
-      <h2>{{bike.tires}}</h2>
-      <img :src="bike.suspensionPath" />
-    </div>
-  </section>
-</div>
+  <div class="home">
+    <section class="bike-container">
+      <div
+        class="bike-grid"
+        v-for="b in bikes"
+        :key="b.id"
+        @click="selectItem(b)"
+      >
+        <div class="item">
+          <h2>{{ b.suspension }}</h2>
+          <h2>{{ b.frame }}</h2>
+          <h2>{{ b.tires }}</h2>
+          <button @click="frameChange(b.id)">Edit</button>
+          <button @click="deleteBike(b)">Delete</button>
+          <div v-if="edit == true && b == findBike">
+            <p>*** May only change the frame ***</p>
+            <div class="question">
+              <select  required name="newFrame" id="newFrame" v-model="newFrame" >
+                <option disabled value="">Choose your frame</option>
+                <option value="Santa Cruz Tallboy">Santa Cruz Tallboy</option>
+                <option value="Specialized Stump Jumper">
+                  Specialized Stump Jumper
+                </option>
+                <option value="Cannondale Habit">Cannondale Habit</option>
+              </select>
+              <pre>different Frame = {{ newFrame }}</pre>
+              <div v-if="newFrame == 'Santa Cruz Tallboy'">
+                <img src="../assets/tallboy.jpeg" />
+              </div>
+              <div v-if="newFrame == 'Specialized Stump Jumper'">
+                <img src="../assets/stumper.jpeg" />
+              </div>
+              <div v-if="newFrame == 'Cannondale Habit'">
+                <img src="../assets/habit.jpeg" />
+              </div>
+            </div>
+            <div v-if="newFrame">
+              <button @click="editBike(b)">Submit Changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import axios from 'axios';
+import axios from "axios";
 export default {
-  name: 'Bikes',
-    data() {
+  name: "Bikes",
+  data() {
     return {
-     bikes: [],
-    }
+      bikes: [],
+      edit: false,
+      findBike: null,
+      newFrame: "",
+    };
   },
   created() {
     this.getBikes();
@@ -29,57 +66,69 @@ export default {
       try {
         let response = await axios.get("/api/bikes");
         this.bikes = response.data;
-        console.log("my output: " + this.bikes[0].suspension);
-        console.log("my output: " + this.bikes[0].suspensionPath);
         return true;
       } catch (error) {
         console.log(error);
       }
     },
-  }
-}
+    async deleteBike(bike) {
+      console.log("Entering");
+      try {
+        await axios.delete("/api/bikes/" + bike.id);
+        this.findBike = null;
+        this.$router.go(this.$router.currentRoute);
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    frameChange(b){
+      this.edit = true;
+      this.findBike =  b;
+    },
+    async editBike(bike) {
+      console.log("myOUTPUT: " + bike.id);
+      try {
+        await axios.put("/api/bikes/" + bike.id, {
+          frame: this.newFrame,
+        });
+        this.newFrame = "";
+        this.$router.go(this.$router.currentRoute);
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    selectItem(bike) {
+      this.findBike = bike;
+    },
+  },
+};
 </script>
  
  <style scoped>
-/* Masonry */
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
+.bike-container {
+  display: flex;
+  justify-content: center;
 }
 
-.futureBikes {
-  column-gap: 1.5em;
+.bike-grid {
+  width: 900px;
+  display: flex;
+  justify-content: center;
 }
 
-.bike {
-  margin: 0 0 1.5em;
-  display: inline-block;
-  width: 100%;
+.item {
+  border: 1px solid #fff;
+  width: 300px;
+  height: 300px;
 }
 
-.bike img {
-  width: 100%;
+p {
+  color: red;
 }
 
-/* Masonry on large screens */
-@media only screen and (min-width: 1024px) {
-  .futureBikes {
-    column-count: 4;
-  }
-}
-
-/* Masonry on medium-sized screens */
-@media only screen and (max-width: 1023px) and (min-width: 768px) {
-  .futureBikes {
-    column-count: 3;
-  }
-}
-
-/* Masonry on small screens */
-@media only screen and (max-width: 767px) and (min-width: 540px) {
-  .futureBikes {
-    column-count: 2;
-  }
+img{
+  width: 200px;
 }
 </style>
