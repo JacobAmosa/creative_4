@@ -6,23 +6,11 @@
         <router-link class="routes" to="/about">About</router-link>
         <router-link class="routes" to="/bikes">Bike Wishlist</router-link>
       </div>
-      <strong style="margin-left: -900px; font-size: 20px;">Logged in as: {{user.firstName}} {{user.lastName}}</strong>
+      <strong style="margin-left: -900px; font-size: 20px;">Logged in as: {{user.firstName}} {{user.lastName}}</strong><br>
+      <button @click="logout" style="margin-left: -900px; font-size: 15px;" class="pure-button pure-button-primary">Logout</button>
       <router-view />
     </div>
     <login v-else/>
-    <!-- <div v-else>
-      <div class="header">
-        <h2 style="margin-top: 0px">Dream Bike Builder</h2>
-      </div>
-      <div class="loginButtons">
-        <br />
-        <h3>Use must first login to proceed...</h3>
-        <router-link class="login" to="/login"
-          >click to login or create an account</router-link
-        >
-      </div>
-      <router-view />
-    </div> -->
     <footer>
       <a href="https://github.com/JacobAmosa/creative_4.git">Github Repository</a>
     </footer>
@@ -30,6 +18,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import Login from './views/Login.vue';
 export default {
   components: { Login },
@@ -38,6 +27,16 @@ export default {
       return this.$root.$data.user;
     },
   },
+  methods: {
+    async logout() {
+      try {
+        await axios.delete("/api/users");
+        this.$root.$data.user = null;
+      } catch (error) {
+        this.$root.$data.user = null;
+      }
+    },
+  }
 };
 </script>
 
@@ -76,13 +75,4 @@ footer {
   background-color: #9cbddf;
 }
 
-/* .login {
-    font-size: 20px;
-    text-decoration: none;
-    border:orange; 
-    border-width:5px; 
-    border-style:solid;
-    margin-top: 100px;
-    background-color: orange;
-} */
 </style>
