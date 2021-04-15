@@ -6,7 +6,7 @@
           <h2>{{ b.suspension }}</h2>
           <h2>{{ b.frame }}</h2>
           <h2>{{ b.tires }}</h2>
-          <button @click="frameChange(b.id)">Edit</button>
+          <button @click="frameChange(b)">Edit</button>
           <button @click="deleteBike(b)">Delete</button>
           <div v-if="edit == true && b == findBike">
             <p>*** May only change the frame ***</p>
@@ -30,7 +30,7 @@
                 <img src="../assets/habit.jpeg" />
               </div>
             </div>
-            <div v-if="newFrame">
+            <div v-if="newFrame" class="editButton">
               <button @click="editBike(b)">Submit Changes</button>
             </div>
           </div>
@@ -72,7 +72,7 @@ export default {
       try {
         await axios.delete("/api/bikes/" , bike);
         this.findBike = null;
-        this.$router.go(this.$router.currentRoute);
+        //this.$router.go(this.$router.currentRoute);
         return true;
       } catch (error) {
         console.log(error);
@@ -83,13 +83,12 @@ export default {
       this.findBike =  b;
     },
     async editBike(bike) {
-      console.log("myOUTPUT: " + bike.id);
       try {
-        await axios.put("/api/bikes/" + bike.id, {
+        await axios.put("/api/bikes/" , bike, {
           frame: this.newFrame,
         });
         this.newFrame = "";
-        this.$router.go(this.$router.currentRoute);
+        //this.$router.go(this.$router.currentRoute);
         return true;
       } catch (error) {
         console.log(error);
@@ -126,5 +125,9 @@ p {
 
 img{
   width: 200px;
+}
+
+.editButton {
+  padding-bottom: 100px;
 }
 </style>

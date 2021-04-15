@@ -108,7 +108,7 @@ app.delete('/api/bikes/', validUser, async (req, res) => {
 });
 
 //Retrieves and edits specific bike.
-app.put('/api/bikes/:id', async (req, res) => {
+app.put('/api/bikes/', validUser, async (req, res) => {
   let editedbike;
   console.log("ATTEMPTING: " + req );
   try{
