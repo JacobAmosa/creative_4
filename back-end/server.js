@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+//sets up express
 const app = express();
 
 // parse application/x-www-form-urlencoded
@@ -13,7 +14,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/todo', {
+mongoose.connect('mongodb://localhost:27017/dreambike', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
@@ -50,6 +51,10 @@ const bikeSchema = new mongoose.Schema({
 
 // Create a model for assembled bikes.
 const Bike = mongoose.model('Bike', bikeSchema);
+
+// import the users module and setup its API path
+const users = require("./users.js");
+app.use("/api/users", users.routes);
 
 // Gets a list of all assembled bikes.
 app.get('/api/bikes', async (req, res) => {
