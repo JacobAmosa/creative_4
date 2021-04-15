@@ -1,12 +1,7 @@
 <template>
   <div class="home">
     <section class="bike-container">
-      <div
-        class="bike-grid"
-        v-for="b in bikes"
-        :key="b.id"
-        @click="selectItem(b)"
-      >
+      <div class="bike-grid" v-for="b in bikes" :key="b.id" @click="selectItem(b)">
         <div class="item">
           <h2>{{ b.suspension }}</h2>
           <h2>{{ b.frame }}</h2>
@@ -65,16 +60,17 @@ export default {
     async getBikes() {
       try {
         let response = await axios.get("/api/bikes");
-        this.bikes = response.data;
+        this.bikes = response.data.bikes;
+        console.log(this.bikes);
         return true;
       } catch (error) {
         console.log(error);
       }
     },
     async deleteBike(bike) {
-      console.log("Entering");
+      console.log("the bike ID: " + bike);
       try {
-        await axios.delete("/api/bikes/" + bike.id);
+        await axios.delete("/api/bikes/" , bike);
         this.findBike = null;
         this.$router.go(this.$router.currentRoute);
         return true;
