@@ -31,15 +31,23 @@ app.use(cookieSession({
     }
 }));
 
+// import the users module and setup its API path
+const users = require("./users.js");
+app.use("/api/users", users.routes);
+
+//*******ADDED*******
+const User = users.model;
+
+//*******ADDED*******
+const validUser = users.valid;
+
 // Create a newly assembled bike. Takes suspension, frame, and tire type.
-app.post('/api/bikes', async (req, res) => {
+app.post('/api/bikes', validUser, async (req, res) => {
   const bike = new Bike({
+    user: req.user,
     suspension: req.body.suspension,
     frame: req.body.frame,
     tires: req.body.tires,
-    suspensionPath: req.body.suspensionPath,
-    framePath: req.body.framePath,
-    tiresPath: req.body.tiresPath,
   });
   try {
     console.log(req.body);
@@ -53,26 +61,34 @@ app.post('/api/bikes', async (req, res) => {
 
 // Create a scheme for fully assembled bikes.
 const bikeSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User"
+  },
   suspension: String,
   frame: String,
   tires: String,
-  suspensionPath: String,
-  framePath: String,
-  tiresPath: String,
+  created: {
+    type: Date,
+    default: Date.now
+  },
 });
 
 // Create a model for assembled bikes.
 const Bike = mongoose.model('Bike', bikeSchema);
 
-// import the users module and setup its API path
-const users = require("./users.js");
-app.use("/api/users", users.routes);
-
 // Gets a list of all assembled bikes.
-app.get('/api/bikes', async (req, res) => {
+app.get('/api/bikes', validUser, async (req, res) => {
   try {
-    let bikes = await Bike.find();
-    res.send(bikes);
+    let bikes = await Bike.find({
+      user: req.user
+    }).sort({
+      created: -1
+    });
+    console.log("server data: " + bikes);
+    return res.send({
+      bikes: bikes
+    });
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
@@ -80,7 +96,8 @@ app.get('/api/bikes', async (req, res) => {
 });
 
 //Retrieves the specific ID of bike and deletes.
-app.delete('/api/bikes/:id', async (req, res) => {
+app.delete('/api/bikes/', validUser, async (req, res) => {
+  console.log("deleteing this bike: " + req);
   try{
     await Bike.deleteOne(req.bike);
     res.sendStatus(200);
