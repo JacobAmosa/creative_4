@@ -6,7 +6,7 @@
         <router-link class="routes" to="/about">About</router-link>
         <router-link class="routes" to="/bikes">Bike Wishlist</router-link>
       </div>
-      <strong style="margin-left: -900px; font-size: 20px;">Logged in as: {{user.firstName}} {{user.lastName}}</strong><br>
+      <strong style="margin-left: -900px; font-size: 20px; color: red;">Logged in as: {{user.firstName}} {{user.lastName}}</strong><br>
       <button @click="logout" style="margin-left: -900px; font-size: 15px;" class="pure-button pure-button-primary">Logout</button>
       <router-view />
     </div>
@@ -26,6 +26,14 @@ export default {
     user() {
       return this.$root.$data.user;
     },
+  },
+  async created() {
+    try {
+      let response = await axios.get('/api/users');
+      this.$root.$data.user = response.data.user;
+    } catch (error) {
+      this.$root.$data.user = null;
+    }
   },
   methods: {
     async logout() {

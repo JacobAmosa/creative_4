@@ -90,6 +90,7 @@ export default {
           tires: this.tires,
         });
         this.bikeAdded = bikeToDB.data;
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }

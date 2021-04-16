@@ -1,6 +1,6 @@
 <template>
   <div class="hero">
-    <div class="heroBox">
+    <div>
       <form class="pure-form">
         <fieldset>
           <legend>Register for an account</legend>
@@ -102,7 +102,7 @@ h1 {
   font-variant: capitalize;
 }
 .hero {
-  padding: 30px;
+  padding: 120px;
   display: flex;
   justify-content: center;
 }

@@ -108,9 +108,9 @@ app.delete('/api/bikes/', validUser, async (req, res) => {
 });
 
 //Retrieves and edits specific bike.
-app.put('/api/bikes/', validUser, async (req, res) => {
+app.put('/api/bikes/:id', validUser, async (req, res) => {
   let editedbike;
-  console.log("ATTEMPTING: " + req );
+  console.log("ATTEMPTING: " + req.params.id );
   try{
     editedbike = await Bike.findOne(req.bike);
     editedbike.frame = req.body.frame;

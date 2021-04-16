@@ -6,7 +6,7 @@
           <h2>{{ b.suspension }}</h2>
           <h2>{{ b.frame }}</h2>
           <h2>{{ b.tires }}</h2>
-          <button @click="frameChange(b)">Edit</button>
+          <button @click="frameChange(b._id)">Edit</button>
           <button @click="deleteBike(b)">Delete</button>
           <div v-if="edit == true && b == findBike">
             <p>*** May only change the frame ***</p>
@@ -72,7 +72,7 @@ export default {
       try {
         await axios.delete("/api/bikes/" , bike);
         this.findBike = null;
-        //this.$router.go(this.$router.currentRoute);
+        window.location.reload();
         return true;
       } catch (error) {
         console.log(error);
@@ -84,11 +84,11 @@ export default {
     },
     async editBike(bike) {
       try {
-        await axios.put("/api/bikes/" , bike, {
+        await axios.put("/api/bikes/" + bike, {
           frame: this.newFrame,
         });
         this.newFrame = "";
-        //this.$router.go(this.$router.currentRoute);
+        window.location.reload();
         return true;
       } catch (error) {
         console.log(error);
