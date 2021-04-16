@@ -85,7 +85,6 @@ app.get('/api/bikes', validUser, async (req, res) => {
     }).sort({
       created: -1
     });
-    console.log("server data: " + bikes);
     return res.send({
       bikes: bikes
     });
@@ -96,8 +95,8 @@ app.get('/api/bikes', validUser, async (req, res) => {
 });
 
 //Retrieves the specific ID of bike and deletes.
-app.delete('/api/bikes/', validUser, async (req, res) => {
-  console.log("deleteing this bike: " + req);
+app.delete('/api/bikes/:id', validUser, async (req, res) => {
+  console.log("deleteing this bike: " + req.bike);
   try{
     await Bike.deleteOne(req.bike);
     res.sendStatus(200);
